@@ -1,21 +1,22 @@
 import axios from "axios";
 
-const API_URL =
-  "https://api.themoviedb.org/3/search/movie?include_adult=false&language=en-US&page=1";
-const API_TOKEN = import.meta.env.VITE_TMDB_API_TOKEN;
-
-const options = {
-  headers: {
-    // Замість api_read_access_token вставте свій токен
-    Authorization: `Bearer ${API_TOKEN}`,
-  },
+axios.defaults.baseURL = "https://api.themoviedb.org/3/";
+axios.defaults.headers.common[
+  "Authorization"
+] = `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3Y2FkZWExYTc5ZGQwZTNjZWY4ZjM3YzkyMmJhOWNhYyIsIm5iZiI6MTczOTAyMTE1My42NDcsInN1YiI6IjY3YTc1YjYxNTcxZDcwN2YxNGM4YjFkNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.JvUaBfAkL5SNVkbbvoLZJl81LESkAGAkey-vBAv-58k`;
+axios.defaults.params = {
+  include_adult: false,
+  language: "en-US",
 };
 
-export const fetchMovies = async () => {
-  const { results } = await axios;
+export const searchTrendingMovies = async () => {
+  const { data } = await axios.get(`/trending/movie/day`);
+  return data.results;
 };
 
-// axios
-//   .get(url, options)
-//   .then((response) => console.log(response))
-//   .catch((err) => console.error(err));
+export const searchTrendingMoviesById = async (moviesId) => {
+  const { data } = await axios.get(`/movie/${moviesId}`);
+  console.log(data);
+
+  return data;
+};
