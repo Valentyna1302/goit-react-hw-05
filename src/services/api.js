@@ -14,9 +14,17 @@ export const searchTrendingMovies = async () => {
   return data.results;
 };
 
-export const searchTrendingMoviesById = async (moviesId) => {
-  const { data } = await axios.get(`/movie/${moviesId}`);
-  console.log(data);
-
+export const searchTrendingMoviesById = async (movieId) => {
+  const { data } = await axios.get(`/movie/${movieId}`);
   return data;
+};
+
+export const fetchCastById = async (movieId) => {
+  const { data } = await axios.get(`/movie/${movieId}/credits`);
+  return data.cast;
+};
+
+export const fetchReviewsById = async (movieId) => {
+  const { data } = await axios.get(`/movie/${movieId}/reviews`);
+  return data.results;
 };

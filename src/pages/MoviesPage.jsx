@@ -7,7 +7,6 @@ const MoviesPage = () => {
   useEffect(() => {
     const getData = async () => {
       const data = await searchTrendingMovies();
-      console.log(data);
       setMovies(data);
     };
     getData();
