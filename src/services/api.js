@@ -19,6 +19,13 @@ export const searchTrendingMoviesById = async (movieId) => {
   return data;
 };
 
+export async function searchMovies(query) {
+  const { data } = await axios.get("/search/movie", {
+    params: { query },
+  });
+  return data.results;
+}
+
 export const fetchCastById = async (movieId) => {
   const { data } = await axios.get(`/movie/${movieId}/credits`);
   return data.cast;
