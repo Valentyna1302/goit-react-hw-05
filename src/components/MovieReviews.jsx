@@ -5,7 +5,7 @@ import { fetchReviewsById } from "../services/api";
 const MovieReviews = () => {
   const { movieId } = useParams();
   const [reviews, setReviews] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const getData = async () => {
@@ -13,8 +13,8 @@ const MovieReviews = () => {
         setIsLoading(true);
         const data = await fetchReviewsById(movieId);
         setReviews(data);
-      } catch {
-        console.error("Not Found");
+      } catch (error) {
+        console.error(error);
       } finally {
         setIsLoading(false);
       }

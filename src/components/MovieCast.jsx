@@ -5,14 +5,26 @@ import { fetchCastById } from "../services/api";
 const MovieCast = () => {
   const { movieId } = useParams();
   const [cast, setCast] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const getData = async () => {
-      const data = await fetchCastById(movieId);
-      setCast(data);
+      try {
+        setIsLoading(true);
+        const data = await fetchCastById(movieId);
+        setCast(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
     };
     getData();
   }, [movieId]);
+
+  if (isLoading) {
+    return <p>Loading reviews...</p>;
+  }
 
   return (
     <ul>

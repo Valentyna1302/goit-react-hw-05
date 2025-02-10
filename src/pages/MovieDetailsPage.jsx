@@ -1,25 +1,42 @@
-import { useEffect, useState } from "react";
-import { NavLink, Outlet, useParams } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import {
+  Link,
+  NavLink,
+  Outlet,
+  useLocation,
+  useParams,
+} from "react-router-dom";
 import { searchTrendingMoviesById } from "../services/api";
 
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
   const [movie, setMovie] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const location = useLocation();
+  const goBackUrl = useRef(location?.state ?? "/movies");
 
   useEffect(() => {
     const getData = async () => {
-      const data = await searchTrendingMoviesById(movieId);
-      setMovie(data);
+      try {
+        setIsLoading(true);
+        const data = await searchTrendingMoviesById(movieId);
+        setMovie(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
     };
     getData();
   }, [movieId]);
 
-  if (!movie) {
-    return <h2>Loading...</h2>;
+  if (isLoading) {
+    return <p>Loading...</p>;
   }
 
-  return (
+  return movie ? (
     <div>
+      <Link to={goBackUrl.current}>Go back</Link>
       <img
         src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
         height={300}
@@ -49,6 +66,8 @@ const MovieDetailsPage = () => {
         <Outlet />
       </div>
     </div>
+  ) : (
+    <p>Not Found </p>
   );
 };
 

@@ -1,16 +1,16 @@
 import { Route, Routes } from "react-router-dom";
-import Header from "./components/Header/Header";
 import HomePage from "./pages/HomePage";
 import MoviesPage from "./pages/MoviesPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import MovieDetailsPage from "./pages/MovieDetailsPage";
 import MovieCast from "./components/MovieCast";
 import MovieReviews from "./components/MovieReviews";
+import Navigation from "./components/Navigation";
 
 const App = () => {
   return (
     <main>
-      <Header />
+      <Navigation />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/movies" element={<MoviesPage />} />
