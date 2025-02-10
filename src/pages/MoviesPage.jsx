@@ -7,16 +7,20 @@ import { useSearchParams } from "react-router-dom";
 const MoviesPage = () => {
   const [movies, setMovies] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [isLoading, setIsLoading] = useState(false);
   const query = searchParams.get("query") ?? "";
 
   useEffect(() => {
     const getData = async () => {
       try {
         if (!query) return;
+        setIsLoading(true);
         const data = await searchMovies(query);
         setMovies(data);
       } catch {
         console.error("Not Found");
+      } finally {
+        setIsLoading(false);
       }
     };
     getData();
@@ -39,7 +43,14 @@ const MoviesPage = () => {
           <button type="submit">Search</button>
         </Form>
       </Formik>
-      <MovieList movies={filterData} />
+
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : query && filterData.length === 0 ? (
+        <p>No movies found for {query}</p>
+      ) : (
+        <MovieList movies={filterData} />
+      )}
     </div>
   );
 };
